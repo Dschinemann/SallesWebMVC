@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SallesWebMVC.Data;
 using SallesWebMVC.Models;
 using System.Diagnostics;
 
@@ -10,7 +11,7 @@ namespace SallesWebMVC.Controllers
 
         public HomeController(ILogger<HomeController> logger)
         {
-            _logger = logger;
+            _logger = logger;            
         }
 
         public IActionResult Index()

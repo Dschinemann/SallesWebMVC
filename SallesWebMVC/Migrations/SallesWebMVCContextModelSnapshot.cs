@@ -63,7 +63,7 @@ namespace SallesWebMVC.Migrations
 
                     b.HasIndex("SellerId");
 
-                    b.ToTable("SalesRecords");
+                    b.ToTable("SalesRecord");
                 });
 
             modelBuilder.Entity("SallesWebMVC.Models.Seller", b =>
@@ -95,7 +95,7 @@ namespace SallesWebMVC.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.ToTable("Sellers");
+                    b.ToTable("Seller");
                 });
 
             modelBuilder.Entity("SallesWebMVC.Models.SalesRecord", b =>

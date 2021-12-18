@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SallesWebMVC.Migrations
 {
-    public partial class FisrtEntities : Migration
+    public partial class First : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -23,7 +23,7 @@ namespace SallesWebMVC.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Sellers",
+                name: "Seller",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -36,9 +36,9 @@ namespace SallesWebMVC.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Sellers", x => x.Id);
+                    table.PrimaryKey("PK_Seller", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Sellers_Department_DepartmentId",
+                        name: "FK_Seller_Department_DepartmentId",
                         column: x => x.DepartmentId,
                         principalTable: "Department",
                         principalColumn: "Id",
@@ -46,7 +46,7 @@ namespace SallesWebMVC.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SalesRecords",
+                name: "SalesRecord",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -58,33 +58,33 @@ namespace SallesWebMVC.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SalesRecords", x => x.Id);
+                    table.PrimaryKey("PK_SalesRecord", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SalesRecords_Sellers_SellerId",
+                        name: "FK_SalesRecord_Seller_SellerId",
                         column: x => x.SellerId,
-                        principalTable: "Sellers",
+                        principalTable: "Seller",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_SalesRecords_SellerId",
-                table: "SalesRecords",
+                name: "IX_SalesRecord_SellerId",
+                table: "SalesRecord",
                 column: "SellerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Sellers_DepartmentId",
-                table: "Sellers",
+                name: "IX_Seller_DepartmentId",
+                table: "Seller",
                 column: "DepartmentId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "SalesRecords");
+                name: "SalesRecord");
 
             migrationBuilder.DropTable(
-                name: "Sellers");
+                name: "Seller");
 
             migrationBuilder.DropTable(
                 name: "Department");

@@ -12,8 +12,8 @@ using SallesWebMVC.Data;
 namespace SallesWebMVC.Migrations
 {
     [DbContext(typeof(SallesWebMVCContext))]
-    [Migration("20211216185923_FisrtEntities")]
-    partial class FisrtEntities
+    [Migration("20211218205139_First")]
+    partial class First
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -65,7 +65,7 @@ namespace SallesWebMVC.Migrations
 
                     b.HasIndex("SellerId");
 
-                    b.ToTable("SalesRecords");
+                    b.ToTable("SalesRecord");
                 });
 
             modelBuilder.Entity("SallesWebMVC.Models.Seller", b =>
@@ -97,7 +97,7 @@ namespace SallesWebMVC.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.ToTable("Sellers");
+                    b.ToTable("Seller");
                 });
 
             modelBuilder.Entity("SallesWebMVC.Models.SalesRecord", b =>
