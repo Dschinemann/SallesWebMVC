@@ -13,6 +13,7 @@ builder.Services.AddDbContext<SallesWebMVCContext>(options =>
 
 builder.Services.AddScoped<SeedingService,SeedingService>();
 builder.Services.AddScoped<SellersService>();
+builder.Services.AddScoped<DepartmentServices>();
 
 
 var app = builder.Build();
