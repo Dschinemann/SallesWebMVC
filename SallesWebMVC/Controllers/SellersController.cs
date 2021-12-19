@@ -2,6 +2,7 @@
 using SallesWebMVC.Models;
 using SallesWebMVC.Models.ViewModels;
 using SallesWebMVC.Services;
+using SallesWebMVC.Services.Exceptions;
 
 namespace SallesWebMVC.Controllers
 {
@@ -15,7 +16,7 @@ namespace SallesWebMVC.Controllers
             _departmentServices = departmentServices;
         }
         public IActionResult Index()
-        {           
+        {
             var list = _sellersService.FindAll();
             return View(list);
         }
@@ -38,9 +39,9 @@ namespace SallesWebMVC.Controllers
 
         public IActionResult Delete(int? id)
         {
-            if(id == null) return NotFound();
+            if (id == null) return NotFound();
             var obj = _sellersService.FindById(id.Value);
-            if(obj == null) return NotFound();
+            if (obj == null) return NotFound();
             return View(obj);
         }
 
@@ -58,6 +59,39 @@ namespace SallesWebMVC.Controllers
             var obj = _sellersService.FindById(id.Value);
             if (obj == null) return NotFound();
             return View(obj);
+        }
+        public IActionResult Edit(int? id)
+        {
+            if (id == null) return NotFound();
+            var obj = _sellersService.FindById(id.Value);
+            if (obj == null) return NotFound();
+            List<Department> departments = _departmentServices.FindAll();
+            SellerFormViewModel model = new SellerFormViewModel
+            {
+                Seller = obj,
+                Departments = departments,
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, Seller seller)
+        {
+            if (id != seller.Id) return BadRequest();
+            try
+            {
+                _sellersService.update(seller);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (NotFoundExceptions e)
+            {
+                return NotFound();
+            }
+            catch(DbConcurrencyException e)
+            {
+                return BadRequest();
+            }
         }
     }
 }
