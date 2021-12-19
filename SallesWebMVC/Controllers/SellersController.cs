@@ -34,13 +34,19 @@ namespace SallesWebMVC.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Seller seller)
         {
+            if (!ModelState.IsValid)
+            {
+                var departments = _departmentServices.FindAll();
+                var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
+                return View(viewModel);
+            }
             _sellersService.Insert(seller);
             return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Delete(int? id)
         {
-            if (id == null) return RedirectToAction(nameof(Error), new {Message = "Id not provided"});
+            if (id == null) return RedirectToAction(nameof(Error), new { Message = "Id not provided" });
             var obj = _sellersService.FindById(id.Value);
             if (obj == null) return RedirectToAction(nameof(Error), new { Message = "Id not found" });
             return View(obj);
@@ -79,30 +85,37 @@ namespace SallesWebMVC.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Seller seller)
         {
-            if (id != seller.Id) return RedirectToAction(nameof(Error), new { Message = "Id mismatch" });
-            try
+            if (!ModelState.IsValid)
             {
-                _sellersService.update(seller);
-                return RedirectToAction(nameof(Index));
+                var departments = _departmentServices.FindAll();
+                var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
+                return View(viewModel);
             }
-            catch (NotFoundExceptions e)
-            {
-                return RedirectToAction(nameof(Error), new { Message = e.Message });
-            }
-            catch(DbConcurrencyException e)
-            {
-                return RedirectToAction(nameof(Error), new { Message = e.Message });
-            }
-        }
 
-        public IActionResult Error(string message)
-        {
-            var viewModel = new ErrorViewModel
+                if (id != seller.Id) return RedirectToAction(nameof(Error), new { Message = "Id mismatch" });
+                try
+                {
+                    _sellersService.update(seller);
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (NotFoundExceptions e)
+                {
+                    return RedirectToAction(nameof(Error), new { Message = e.Message });
+                }
+                catch (DbConcurrencyException e)
+                {
+                    return RedirectToAction(nameof(Error), new { Message = e.Message });
+                }
+            }
+
+            public IActionResult Error(string message)
             {
-                Message = message,
-                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier //Id da requisição
-            };
-            return View(viewModel);
+                var viewModel = new ErrorViewModel
+                {
+                    Message = message,
+                    RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier //Id da requisição
+                };
+                return View(viewModel);
+            }
         }
     }
-}
